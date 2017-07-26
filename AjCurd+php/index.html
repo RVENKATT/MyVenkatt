@@ -1,0 +1,83 @@
+<html>
+<head>
+<title>Webinar Demo</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<script src="app.js"></script>
+
+</head>
+<body ng-app="myApp">
+	<div class="container" ng-controller="myCtrl">
+		<h1 class="text-center">Webinar Demo</h1>
+		<div class="pull-left">
+			<h3>Add Employee</h3>
+			<form name="form" novalidate>
+				<div class="form-group">
+					<label>Employee Name</label>
+					<input type="text" class="form-control" placeholder="Enter name" ng-model="empName" required>
+				</div>
+				<div class="form-group">
+					<label>Employee Email</label>
+					<input type="email" name="empEmail" class="form-control" placeholder="Enter email" ng-model="empEmail" required>
+				</div>				
+				<div class="form-group">
+					<label>Salary</label>
+					<input type="number" class="form-control" placeholder="Enter salary" ng-model="empSalary" required>
+				</div>				
+				<div class="form-group">
+					<label>Active</label>
+					<input type="radio" value="1" ng-model="empActive">Yes
+					<input type="radio" value="0" ng-model="empActive">No
+				</div>
+				<button type="button" class="btn btn-primary" ng-click="addEmployeetoDB()" ng-disabled="form.$invalid">Add Employee</button>
+				<button type="button" class="btn btn-primary" ng-click="getEmployees()">Get Employees</button>
+			</form>
+		</div>
+		<div class="pull-right" ng-show="employees.length>0">
+			<h3>List Employees</h3>
+			<table class="table table-striped table-bordered">
+				<thead>
+					<th>Employee Name</th>
+					<th>Employee Email</th>
+					<th>Employee Salary</th>
+					<th>Active</th>
+					<th>Edit</th>
+				</thead>
+				<tbody>
+<tr ng-repeat="employee in employees" ng-include="getTemplate(employee)">
+<script type="text/ng-template" id="display">
+						<td>{{employee.empName}}</td>
+						<td>{{employee.empEmail}}</td>
+						<td>{{employee.empSalary | currency:"&#8377;"}}</td>
+						<td>{{employee.active | active}}</td>
+						<td>
+							<button type="button" class="btn btn-primary" ng-click="editEmployee(employee)">Edit</button>
+							<button type="button" class="btn btn-danger" ng-click="deleteEmployee(employee)">Delete</button>
+						</td>
+					</script>
+					<script type="text/ng-template" id="edit">
+						<td><input type="text" ng-model=employee.empName class="form-control input-sm"/></td>
+						<td><input type="text" ng-model=employee.empEmail class="form-control input-sm"/></td>
+						<td><input type="text" ng-model=employee.empSalary class="form-control input-sm"/></td>
+						<td>
+							<select class="form-control input-sm" ng-model=employee.active>
+								<option value='1'>Yes</option>
+								<option value='0'>No</option>
+							</select>
+						</td>
+						<td>
+							<button type="button" class="btn btn-primary" ng-click="updateEmployee(employee)">Save</button>
+							<button type="button" class="btn btn-danger" ng-click="reset()">Cancel</button>
+						</td>
+					</script>
+					</tr>
+				</tbody>
+			<table>
+			
+		</div>
+	</div>
+</body>
+</html>
